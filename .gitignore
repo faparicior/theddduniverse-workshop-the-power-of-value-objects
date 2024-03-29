@@ -1,0 +1,9 @@
+.idea
+vendor
+*.sqlite
+/.phpunit.result.cache
+/.phpunit.cache
+
+# Jest
+.tmp/
+coverage/
