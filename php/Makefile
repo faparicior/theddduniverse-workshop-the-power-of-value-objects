@@ -1,38 +1,38 @@
 
-user:= $(shell id -u)
-group:= $(shell id -g)
+UID=$(shell id -u)
+GID=$(shell id -g)
 current_dir = $(shell pwd)
+
+build-image:
+	docker compose -f docker-compose.yml build --build-arg GID=$(GID) --build-arg UID=$(UID) php-ddduniverse
+.PHONY: build-image
 
 composer-install:
 	docker run --rm --interactive --tty \
 	  --volume $(current_dir):/app \
-	  -u $(user):$(group) \
+	  -u $(UID):$(GID) \
 	  composer install
 .PHONY: composer-install
+
+tests:
+	docker compose run --rm --interactive --tty --user $(UID) -v $(current_dir)/:/usr/src/app -w /usr/src/app \
+	  php-ddduniverse php /usr/src/app/vendor/phpunit/phpunit/phpunit /usr/src/app/tests/E2e
+.PHONY: tests
 
 composer:
 	docker run --rm --interactive --tty \
 	  --volume $(current_dir):/app \
-	  -u $(user):$(group) \
+	  -u $(UID):$(GID) \
 	  composer $(param)
 .PHONY: composer
 
 composer-autoload:
 	docker run --rm --interactive --tty \
 	  --volume $(current_dir):/app \
-	  -u $(user):$(group) \
+	  -u $(UID):$(GID) \
 	  composer dump-autoload
 .PHONY: composer-autoload
 
-tests:
-	docker run -u $(user):$(group) -it --rm --name demo-app -v $(current_dir)/:/usr/src/app -w /usr/src/app php:8.3.2-cli-bullseye php /usr/src/app/vendor/phpunit/phpunit/phpunit /usr/src/app/tests/e2e
-.PHONY: tests
-
 console:
-	docker compose run --rm php /bin/bash
+	docker compose run --rm php-ddduniverse /bin/bash
 .PHONY: console
-
-
-build-image:
-	docker compose -f docker-compose.yml build php
-.PHONY: build-image
