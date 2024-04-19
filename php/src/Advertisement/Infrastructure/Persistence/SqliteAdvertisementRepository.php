@@ -20,8 +20,8 @@ class SqliteAdvertisementRepository implements AdvertisementRepository
     public function save(Advertisement $advertisement): void
     {
         $this->dbConnection->execute(sprintf('
-                INSERT INTO advertisements (id, description, password) VALUES (\'%1$s\', \'%2$s\', \'%3$s\') 
-                ON CONFLICT(id) DO UPDATE SET description = \'%2$s\', password = \'%3$s\';',
+            INSERT INTO advertisements (id, description, password) VALUES (\'%1$s\', \'%2$s\', \'%3$s\') 
+            ON CONFLICT(id) DO UPDATE SET description = \'%2$s\', password = \'%3$s\';',
                 $advertisement->id(),
                 $advertisement->description(),
                 md5($advertisement->password()),

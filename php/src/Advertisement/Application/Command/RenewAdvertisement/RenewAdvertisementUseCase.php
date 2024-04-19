@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Demo\App\Advertisement\Application\Command\UpdateAdvertisement;
+namespace Demo\App\Advertisement\Application\Command\RenewAdvertisement;
 
 use Demo\App\Advertisement\Domain\AdvertisementRepository;
 use Exception;
 
-final class UpdateAdvertisementUseCase
+final class RenewAdvertisementUseCase
 {
     public function __construct(private AdvertisementRepository $advertisementRepository)
     {
@@ -15,7 +15,7 @@ final class UpdateAdvertisementUseCase
     /**
      * @throws Exception
      */
-    public function execute(UpdateAdvertisementCommand $command): void
+    public function execute(RenewAdvertisementCommand $command): void
     {
         $advertisement = $this->advertisementRepository->findById($command->id);
 
@@ -23,7 +23,6 @@ final class UpdateAdvertisementUseCase
             throw new Exception('Password incorrect');
         }
 
-        $advertisement->changeDescription($command->description);
         $advertisement->changePassword(md5($command->password));
 
         $this->advertisementRepository->save($advertisement);

@@ -14,6 +14,8 @@ final class Server
         return match ($request->method()) {
             FrameworkRequest::METHOD_GET => $this->get($request),
             FrameworkRequest::METHOD_POST => $this->post($request),
+            FrameworkRequest::METHOD_PUT => $this->put($request),
+            FrameworkRequest::METHOD_PATCH => $this->patch($request),
             default => $this->notFound($request),
         };
     }
@@ -30,6 +32,23 @@ final class Server
             default => $this->notFound($request),
         };
     }
+
+    public function put(FrameworkRequest $request): FrameworkResponse
+    {
+        return match ($request->pathStart()) {
+            'advertisements' => $this->resolver->updateAdvertisementController()->request($request),
+            default => $this->notFound($request),
+        };
+    }
+
+    public function patch(FrameworkRequest $request): FrameworkResponse
+    {
+        return match ($request->pathStart()) {
+            'advertisements' => $this->resolver->renewAdvertisementController()->request($request),
+            default => $this->notFound($request),
+        };
+    }
+
     public function notFound(FrameworkRequest $request): FrameworkResponse
     {
         return new FrameworkResponse(FrameworkResponse::STATUS_NOT_FOUND, []);
