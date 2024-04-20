@@ -20,7 +20,7 @@ final class RenewAdvertisementUseCase
         $advertisement = $this->advertisementRepository->findById($command->id);
 
         if ($advertisement->password() !== md5($command->password)) {
-            throw new Exception('Password incorrect');
+            return;
         }
 
         $advertisement->renew();
