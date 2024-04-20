@@ -9,7 +9,9 @@ final class Advertisement
         private readonly string $id,
         private string $description,
         private string $password,
-    ){}
+        private \DateTime $date
+    ){
+    }
 
     public function id(): string
     {
@@ -26,13 +28,25 @@ final class Advertisement
         return $this->password;
     }
 
-    public function changeDescription(string $description): void
+    public function date(): \DateTime
     {
-        $this->description = $description;
+        return $this->date;
     }
 
-    public function changePassword(string $password): void
+    public function renew(): void
     {
+        $this->updateDate();
+    }
+
+    public function update(string $description, string $password): void
+    {
+        $this->description = $description;
         $this->password = $password;
+        $this->updateDate();
+    }
+
+    private function updateDate(): void
+    {
+        $this->date = new \DateTime();
     }
 }

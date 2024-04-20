@@ -18,6 +18,7 @@ final class PublishAdvertisementUseCase
             $command->id,
             $command->description,
             $command->password,
+            new \DateTime(),
         );
 
         $this->advertisementRepository->save($advertisement);

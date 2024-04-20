@@ -23,7 +23,7 @@ final class RenewAdvertisementUseCase
             throw new Exception('Password incorrect');
         }
 
-        $advertisement->changePassword(md5($command->password));
+        $advertisement->renew();
 
         $this->advertisementRepository->save($advertisement);
     }

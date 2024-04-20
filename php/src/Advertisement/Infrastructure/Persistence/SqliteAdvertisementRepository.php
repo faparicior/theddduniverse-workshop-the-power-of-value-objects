@@ -20,11 +20,12 @@ class SqliteAdvertisementRepository implements AdvertisementRepository
     public function save(Advertisement $advertisement): void
     {
         $this->dbConnection->execute(sprintf('
-            INSERT INTO advertisements (id, description, password) VALUES (\'%1$s\', \'%2$s\', \'%3$s\') 
-            ON CONFLICT(id) DO UPDATE SET description = \'%2$s\', password = \'%3$s\';',
+            INSERT INTO advertisements (id, description, password, advertisement_date) VALUES (\'%1$s\', \'%2$s\', \'%3$s\', \'%4$s\') 
+            ON CONFLICT(id) DO UPDATE SET description = \'%2$s\', password = \'%3$s\', advertisement_date = \'%4$s\';',
                 $advertisement->id(),
                 $advertisement->description(),
                 md5($advertisement->password()),
+                $advertisement->date()->format('Y-m-d H:i:s')
             )
         );
     }
@@ -39,6 +40,11 @@ class SqliteAdvertisementRepository implements AdvertisementRepository
             throw new Exception('Advertisement not found');
         }
         $row = $result[0];
-        return new Advertisement($row['id'], $row['description'], $row['password']);
+        return new Advertisement(
+            $row['id'],
+            $row['description'],
+            $row['password'],
+            new \DateTime($row['advertisement_date'])
+        );
     }
 }
