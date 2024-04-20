@@ -12,23 +12,28 @@ Antes se pegaban carteles en las calles o en tablones de anuncios publicitando c
 
 Empezamos la prueba de concepto con un centro cívico cercano a nuestras oficinas.
 
-## Funcionalidad prueba de concepto
-
-- Cada usuario puede publicar tantos anuncios como quiera.
-- Al ser una prueba de concepto, no existe gestión de usuarios o sistema de supervisión de anuncios como tal.
-- Para evitar anuncios no deseados, los responsables del centro cívico son los encargados de crear los anuncios y publicarlos en el sistema.
-- Cada anuncio tiene un password que permite modificar su contenido o borrarlo. En este caso decidimos usar como password el número de carnet del centro cívico del anunciante.
-- Cuando el anuncio se publica, el anunciante recibe un identificador para poder referenciar al anuncio si quiere modificarlo o quitarlo en un futuro. Pero el único que puede hacerlo sigue siendo la persona responsable del centro cívico.
-
 ## Problema
-Nuestro código es un MVP y parece que empezamos a tener buen feedback. El centro cívico nos está enviando nuevas ideas que seguramente tengamos que hacer realidad, con lo que hemos decidido poner un poco de orden en el código antes de que muramos de éxito al escalar la idea.
+Ya hemos refactorizado a arquitectura hexagonal, que le sucede ahora es que nos han comentado que los passwords que guardamos en base de datos tienen un cifrado reversible y por temas legales debemos actualizar nuestro desarrollo.
+
+Como los anuncios tienen un cifrado, aunque sea débil, no podemos actualizarlos todos, con lo que como solución de compromiso haremos lo siguiente.
+
+- Sabemos que cada mes se debe renovar el anuncio introduciendo el identificador y password.
+- También sabemos que en ocasiones se pide modificar la información del anuncio, y en esos casos también usamos el password.
+- Aprovecharemos ese momento y cambiaremos el password obsoleto por el nuevo con un cifrado más robusto.
+
+Estudia el código y comenta con tus colegas la forma más fiable de abordar este problema.
+
+```
+FALTA GRÁFICOS 
+```
 
 ## Hacia una solución
 
-Nos han dicho que usando Arquitectura hexagonal con DDD podremos mitigar bastantes problemas y nos ayudará a escalar nuestro producto a nivel técnico, dándonos agilidad (o eso esperamos).
+Mirando cómo hacerlo, creemos que la mejor forma es encapsular la lógica en un "Value Object" para lidiar con esta casuística.
 
 ## Tenemos un aliado. Tests e2e en nuestra API
 
 Por suerte disponemos de tests que verifican el resultado final de nuestra API, con lo que podemos refactorizar con calma nuestro código.
+En este caso, la persona que desarrollaba la solución sólo pudo hacer los tests E2e antes de irse de vacaciones sin implementar la solución. Deberemos implementarlo nosotros y hacer que los tests pasen en verde.
 
-### [Guión para facilitadores](doc/es/refactor-a-arquitectura-hexagonal.md)
+### [Guión para facilitadores](doc/es/el-poder-de-los-value-objects.md)

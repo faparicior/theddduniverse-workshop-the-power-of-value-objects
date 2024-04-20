@@ -19,33 +19,19 @@ Acto seguido, les daremos acceso al repositorio y les explicamos los puntos clav
 
 ```
 TODO: Link a presentación.
-TODO: Repositorio con todos los lenguajes soportados
- - PHP
- - Kotlin
- - Typescript
 ```
 </details>
 
-### Nuevo requerimiento
-
-Nos han comentado que los passwords que guardamos en base de datos tienen un cifrado reversible y por temas legales debemos actualizar nuestro desarrollo.
-
-Como los anuncios tienen un cifrado, aunque sea débil, no podemos actualizarlos todos, con lo que como solución de compromiso haremos lo siguiente.
-
-- Sabemos que cada mes se debe renovar el anuncio introduciendo el identificador y password.
-- Aprovecharemos ese momento y cambiaremos el password obsoleto por el nuevo con un cifrado más robusto.
-- Mirando cómo hacerlo con DDD, creemos que la mejor forma es encapsular la lógica en un "Value Object" para lidiar con esta casuística.
-
 ### Dinámica
-
-- Presentamos el Value object y sus características
-- Buscaremos un plan en el que el encargado de manejar la complejidad de los passwords sea un Value Object
 
 ### [Actividad en Canva](https://www.canva.com/design/DAF6VDIfdkE/jBve6kYf6zX9ly9tyEToNA/edit?utm_content=DAF6VDIfdkE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
+- Para empezar, damos por sentado que las capas son las del dibujo y su distribución. Les pediremos que imiten con sus cartas esa figura. Dejando sin colocar las cartas tapadas.
+- Presentamos el Value object y sus características
+
 ![introduciendo-value-objects](introduciendo-value-objects.webp)
 
-## Solución final
+## Solución al tablero
 
 <details>
   <summary><b>Click para expandir</b></summary>
@@ -53,19 +39,25 @@ Como los anuncios tienen un cifrado, aunque sea débil, no podemos actualizarlos
 ![introduciendo-value-objects-2](introduciendo-value-objects-2.webp)
 </details>
 
+## Actividad interactiva
+
 ### Fase 1: Aprendiendo a identificar un value object
 
 El objetivo es identificar si el código que veremos es un Value object y si cumple las especificaciones de la carta que lo define.
 
+#### [Value object o no](https://theddduniverse.com/game-cards/cards/primary/value-object/#actividad-value-object-o-no)
 
+### Fase 2: Preparación de la solución
 
-### Fase 2: Dinámica con código
+- Explicamos el problema
+- Le pedimos al público que busque una soluciñon al mismo
+- Sugerimos un plan en el que el encargado de manejar la complejidad de los passwords sea un Value Object
 
-- Para empezar, damos por sentado que las capas son las del dibujo y su distribución. Les pediremos que imiten con sus cartas esa figura. Dejando sin colocar las cartas tapadas.
+### Fase 3: Dinámica con código
+
 - Hablaremos de los requerimientos y el código.
 - Miraremos cómo está en el proyecto inicial y en el distribuido en Arquitectura hexagonal.
 
-```
-TODO: Link al código y rama.
-```
+### Fase 4: Revisamos código y presentamos solución
 
+- Ofrecemos la solución en la rama solution
