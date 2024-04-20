@@ -13,6 +13,18 @@ final class Advertisement
     ){
     }
 
+    public function renew(): void
+    {
+        $this->updateDate();
+    }
+
+    public function update(string $description, string $password): void
+    {
+        $this->description = $description;
+        $this->password = $password;
+        $this->updateDate();
+    }
+
     public function id(): string
     {
         return $this->id;
@@ -31,18 +43,6 @@ final class Advertisement
     public function date(): \DateTime
     {
         return $this->date;
-    }
-
-    public function renew(): void
-    {
-        $this->updateDate();
-    }
-
-    public function update(string $description, string $password): void
-    {
-        $this->description = $description;
-        $this->password = $password;
-        $this->updateDate();
     }
 
     private function updateDate(): void
