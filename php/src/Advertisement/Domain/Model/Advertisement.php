@@ -3,22 +3,25 @@ declare(strict_types=1);
 
 namespace Demo\App\Advertisement\Domain\Model;
 
+use Demo\App\Advertisement\Domain\ValueObject\Password;
+
 final class Advertisement
 {
     public function __construct(
         private readonly string $id,
         private string $description,
-        private string $password,
+        private Password $password,
         private \DateTime $date
     ){
     }
 
-    public function renew(): void
+    public function renew(Password $password): void
     {
+        $this->password = $password;
         $this->updateDate();
     }
 
-    public function update(string $description, string $password): void
+    public function update(string $description, Password $password): void
     {
         $this->description = $description;
         $this->password = $password;
@@ -35,7 +38,7 @@ final class Advertisement
         return $this->description;
     }
 
-    public function password(): string
+    public function password(): Password
     {
         return $this->password;
     }

@@ -5,6 +5,7 @@ namespace Demo\App\Advertisement\Infrastructure\Persistence;
 
 use Demo\App\Advertisement\Domain\AdvertisementRepository;
 use Demo\App\Advertisement\Domain\Model\Advertisement;
+use Demo\App\Advertisement\Domain\ValueObject\Password;
 use Demo\App\Framework\Database\DatabaseConnection;
 use Demo\App\Framework\database\SqliteConnection;
 use Exception;
@@ -24,7 +25,7 @@ class SqliteAdvertisementRepository implements AdvertisementRepository
             ON CONFLICT(id) DO UPDATE SET description = \'%2$s\', password = \'%3$s\', advertisement_date = \'%4$s\';',
                 $advertisement->id(),
                 $advertisement->description(),
-                md5($advertisement->password()),
+                $advertisement->password()->value(),
                 $advertisement->date()->format('Y-m-d H:i:s')
             )
         );
@@ -43,7 +44,7 @@ class SqliteAdvertisementRepository implements AdvertisementRepository
         return new Advertisement(
             $row['id'],
             $row['description'],
-            $row['password'],
+            Password::fromEncryptedPassword($row['password']),
             new \DateTime($row['advertisement_date'])
         );
     }

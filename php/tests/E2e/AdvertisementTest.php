@@ -89,6 +89,50 @@ final class AdvertisementTest extends TestCase
         self::assertGreaterThan(0, $diff->days);
     }
 
+    public function testShouldNotChangeAnAdvertisementWithIncorrectPassword(): void
+    {
+        $this->withAnAdvertisementCreated();
+
+        $request = new FrameworkRequest(
+            FrameworkRequest::METHOD_PUT,
+            'advertisements/' . self::FLAT_ID,
+            [
+                'id' => self::FLAT_ID,
+                'description' => 'Dream advertisement changed ',
+                'password' => 'myBadPassword',
+            ],
+        );
+
+        $response = $this->server->route($request);
+
+        self::assertEmpty($response->data());
+
+        $resultSet = $this->connection->query('select * from advertisements;');
+        self::assertEquals('Dream advertisement ', $resultSet[0]['description']);
+        self::assertEquals(md5('myPassword'), $resultSet[0]['password']);
+    }
+
+    public function testShouldNotRenewAnAdvertisementWithIncorrectPassword(): void
+    {
+        $this->withAnAdvertisementCreated();
+
+        $request = new FrameworkRequest(
+            FrameworkRequest::METHOD_PATCH,
+            'advertisements/' . self::FLAT_ID,
+            [
+                'password' => 'myBadPassword',
+            ]
+        );
+
+        $response = $this->server->route($request);
+
+        self::assertEmpty($response->data());
+
+        $resultSet = $this->connection->query('select * from advertisements;');
+        $diff = date_diff(new \DateTime($resultSet[0]['advertisement_date']), new \DateTime(self::ADVERTISEMENT_CREATION_DATE));
+        self::equalTo($diff->days);
+    }
+
     private function emptyDatabase(): void
     {
         $this->connection->execute('delete from advertisements;');

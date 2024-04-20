@@ -5,6 +5,7 @@ namespace Demo\App\Advertisement\Application\Command\PublishAdvertisement;
 
 use Demo\App\Advertisement\Domain\AdvertisementRepository;
 use Demo\App\Advertisement\Domain\Model\Advertisement;
+use Demo\App\Advertisement\Domain\ValueObject\Password;
 
 final class PublishAdvertisementUseCase
 {
@@ -17,7 +18,7 @@ final class PublishAdvertisementUseCase
         $advertisement = new Advertisement(
             $command->id,
             $command->description,
-            $command->password,
+            Password::fromPlainPassword($command->password),
             new \DateTime(),
         );
 

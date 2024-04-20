@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Demo\App\Advertisement\Application\Command\RenewAdvertisement;
 
 use Demo\App\Advertisement\Domain\AdvertisementRepository;
+use Demo\App\Advertisement\Domain\ValueObject\Password;
 use Exception;
 
 final class RenewAdvertisementUseCase
@@ -19,11 +20,11 @@ final class RenewAdvertisementUseCase
     {
         $advertisement = $this->advertisementRepository->findById($command->id);
 
-        if ($advertisement->password() !== md5($command->password)) {
-            throw new Exception('Password incorrect');
+        if (!$advertisement->password()->isValidatedWith($command->password)) {
+            return;
         }
 
-        $advertisement->renew();
+        $advertisement->renew(Password::fromPlainPassword($command->password));
 
         $this->advertisementRepository->save($advertisement);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Demo\App\Advertisement\Application\Command\UpdateAdvertisement;
 
 use Demo\App\Advertisement\Domain\AdvertisementRepository;
+use Demo\App\Advertisement\Domain\ValueObject\Password;
 use Exception;
 
 final class UpdateAdvertisementUseCase
@@ -19,11 +20,11 @@ final class UpdateAdvertisementUseCase
     {
         $advertisement = $this->advertisementRepository->findById($command->id);
 
-        if ($advertisement->password() !== md5($command->password)) {
-            throw new Exception('Password incorrect');
+        if (!$advertisement->password()->isValidatedWith($command->password)) {
+            return;
         }
 
-        $advertisement->update($command->description, $command->password);
+        $advertisement->update($command->description, Password::fromPlainPassword($command->password));
 
         $this->advertisementRepository->save($advertisement);
     }
