@@ -12,7 +12,6 @@ const ADVERTISEMENT_CREATION_DATE = '2024-02-03 13:30:23';
 
 describe("Advertisement", () => {
 
-
     beforeAll(async () => {
         connection = await SqliteConnectionFactory.createClient();
         server = await FrameworkServer.start();
@@ -23,7 +22,7 @@ describe("Advertisement", () => {
         await connection.execute('delete from advertisements;', [])
     })
 
-    it("Should publish a advertisement", async () => {
+    it("Should create a advertisement with strong password", async () => {
 
         const description = 'Dream advertisement'
         const id = uuid()
@@ -38,16 +37,11 @@ describe("Advertisement", () => {
 
         const dbData = await connection.query("SELECT * FROM advertisements") as any[]
 
-        expect(dbData.length).toBe(1);
-        expect(dbData[0].id).toBe(id);
-        expect(dbData[0].description).toBe(description);
-        expect(dbData[0].password).toBeDefined;
-        expect(dbData[0].advertisement_date).toBeDefined;
-
+        expect(isAStrongPassword(dbData)).toBe(true);
     });
 
 
-    it("Should change an advertisement", async () => {
+    it("Should change to strong password updating an advertisement", async () => {
         await withAnAdvertisementCreated()
 
         const newDescription = 'Dream advertisement changed'
@@ -63,15 +57,10 @@ describe("Advertisement", () => {
 
         const dbData = await connection.query("SELECT * FROM advertisements") as any[]
 
-        expect(dbData.length).toBe(1);
-        expect(dbData[0].description).toBe(newDescription);
-        const newDate = new Date(dbData[0].advertisement_date)
-        const diff = getHourDifference(newDate)
-        expect(diff).toBeLessThan(1)
-
+        expect(isAStrongPassword(dbData)).toBe(true);
     })
 
-    it("Should renew an advertisement", async () => {
+    it("Should change to strong password renewing an advertisement", async () => {
         await withAnAdvertisementCreated()
 
         const newDescription = 'Dream advertisement'
@@ -87,14 +76,9 @@ describe("Advertisement", () => {
 
         const dbData = await connection.query("SELECT * FROM advertisements") as any[]
 
-        expect(dbData.length).toBe(1);
-        expect(dbData[0].description).toBe(newDescription);
-        const newDate = new Date(dbData[0].advertisement_date)
-        const diff = getHourDifference(newDate)
-        expect(diff).toBeLessThan(1)
+        expect(isAStrongPassword(dbData)).toBe(true);
     })
 });
-
 
 async function withAnAdvertisementCreated(): Promise<void> {
 
@@ -115,4 +99,8 @@ function getHourDifference(date: Date): number {
     const differenceInMs = currentDate.getTime() - date.getTime();
     const differenceInHours = differenceInMs / (1000 * 60 * 60);
     return differenceInHours;
+}
+
+function isAStrongPassword(dbData: any[]): boolean {
+    return dbData[0].password.startsWith('$argon2i$');
 }
