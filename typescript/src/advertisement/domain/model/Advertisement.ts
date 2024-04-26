@@ -30,6 +30,10 @@ export class Advertisement {
     this.updateDate();
   }
 
+  public renew(): void {
+    this.updateDate();
+  }
+
   private updateDate(): void {
     this._date = new Date();
   }

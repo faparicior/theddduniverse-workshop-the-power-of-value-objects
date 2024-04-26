@@ -71,6 +71,29 @@ describe("Advertisement", () => {
         expect(diff).toBeLessThan(1)
 
     })
+
+    it("Should renew an advertisement", async () => {
+        await withAnAdvertisementCreated()
+
+        const newDescription = 'Dream advertisement'
+
+        const request = new FrameworkRequest(Method.PATCH, `/advertisements/${FLAT_ID}`,
+            { password: 'myPassword' }
+        )
+
+        const response = await server.route(request)
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toBeUndefined;
+
+        const dbData = await connection.query("SELECT * FROM advertisements") as any[]
+
+        expect(dbData.length).toBe(1);
+        expect(dbData[0].description).toBe(newDescription);
+        const newDate = new Date(dbData[0].advertisement_date)
+        const diff = getHourDifference(newDate)
+        expect(diff).toBeLessThan(1)
+    })
 });
 
 

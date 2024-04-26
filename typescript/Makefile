@@ -14,7 +14,7 @@ install:
 
 tests:
 	docker compose run --rm --interactive --tty --user $(UID)\
-	  node-ddduniverse npm run test
+	  node-ddduniverse npm run test -- --silent=false
 .PHONY: test
 
 console:
