@@ -5,6 +5,7 @@ namespace Tests\Demo\App\E2e;
 use Demo\App\Framework\Database\DatabaseConnection;
 use Demo\App\Framework\DependencyInjectionResolver;
 use Demo\App\Framework\FrameworkRequest;
+use Demo\App\Framework\FrameworkResponse;
 use Demo\App\Framework\Server;
 use PHPUnit\Framework\TestCase;
 
@@ -17,7 +18,6 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
     private Server $server;
     private DatabaseConnection $connection;
 
-
     protected function setUp(): void
     {
         $this->resolver = new DependencyInjectionResolver();
@@ -25,6 +25,25 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
         $this->emptyDatabase();
         $this->server = new Server($this->resolver);
         parent::setUp();
+    }
+
+    public function testShouldPublishAnAdvertisementWithStrongPassword(): void
+    {
+        $request = new FrameworkRequest(
+            FrameworkRequest::METHOD_POST,
+            'advertisement',
+            [
+                'id' => self::FLAT_ID,
+                'description' => 'Dream advertisement ',
+                'password' => 'myPassword',
+            ]
+        );
+
+        $response = $this->server->route($request);
+        self::assertEquals(FrameworkResponse::STATUS_CREATED, $response->statusCode());
+
+        $resultSet = $this->connection->query('select * from advertisements;');
+        $this->expectHasAStrongPassword($resultSet[0]['password']);
     }
 
     public function testShouldChangeToStrongPasswordUpdatingAnAdvertisement(): void
@@ -45,7 +64,7 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
         self::assertEmpty($response->data());
 
         $resultSet = $this->connection->query('select * from advertisements;');
-        self::assertStringStartsWith('$argon2i$' ,$resultSet[0]['password']);
+        $this->expectHasAStrongPassword($resultSet[0]['password']);
     }
 
     public function testShouldChangeToStrongPasswordRenewingAnAdvertisement(): void
@@ -65,7 +84,7 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
         self::assertEmpty($response->data());
 
         $resultSet = $this->connection->query('select * from advertisements;');
-        self::assertStringStartsWith('$argon2i$' ,$resultSet[0]['password']);
+        $this->expectHasAStrongPassword($resultSet[0]['password']);
     }
 
     private function emptyDatabase(): void
@@ -82,5 +101,10 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
                 self::ADVERTISEMENT_CREATION_DATE,
             )
         );
+    }
+
+    private function expectHasAStrongPassword($password): void
+    {
+        self::assertStringStartsWith('$argon2i$', $password);
     }
 }
