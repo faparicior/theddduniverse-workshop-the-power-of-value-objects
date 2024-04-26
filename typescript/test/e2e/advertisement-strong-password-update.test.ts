@@ -93,14 +93,6 @@ async function withAnAdvertisementCreated(): Promise<void> {
 
 }
 
-function getHourDifference(date: Date): number {
-
-    const currentDate = new Date();
-    const differenceInMs = currentDate.getTime() - date.getTime();
-    const differenceInHours = differenceInMs / (1000 * 60 * 60);
-    return differenceInHours;
-}
-
 function isAStrongPassword(dbData: any[]): boolean {
     return dbData[0].password.startsWith('$argon2i$');
 }
