@@ -10,7 +10,7 @@ let server: FrameworkServer
 const FLAT_ID = '6fa00b21-2930-483e-b610-d6b0e5b19b29';
 const ADVERTISEMENT_CREATION_DATE = '2024-02-03 13:30:23';
 
-describe("Advertisement", () => {
+describe("Advertisement strong passwords", () => {
 
     beforeAll(async () => {
         connection = await SqliteConnectionFactory.createClient();
