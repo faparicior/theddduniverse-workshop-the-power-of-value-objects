@@ -23,10 +23,10 @@ describe("Advertisement", () => {
         await connection.execute('delete from advertisements;', [])
     })
 
-    it("Should publish a advertisement", async () => {
+    it("Should publish an advertisement", async () => {
 
         const description = 'Dream advertisement'
-        const id = uuid()
+        const id = FLAT_ID
 
         const request = new FrameworkRequest(Method.POST, '/advertisement',
             { id, description, password: 'myPassword' }
