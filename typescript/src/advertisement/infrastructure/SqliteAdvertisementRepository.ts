@@ -1,7 +1,7 @@
 import { AdvertisementRepository } from '../domain/AdvertisementRepository';
 import { Advertisement } from '../domain/model/Advertisement';
-import { createHash } from "node:crypto";
 import { DatabaseConnection } from '../../framework/database/DatabaseConnection';
+import {Password} from "../domain/model/value-object/Password";
 
 export class SqliteAdvertisementRepository implements AdvertisementRepository {
 
@@ -21,23 +21,13 @@ export class SqliteAdvertisementRepository implements AdvertisementRepository {
     return new Advertisement(
       row.id,
       row.description,
-      row.password,
+      Password.fromEncryptedPassword(row.password),
       new Date(row.advertisement_date)
     )
 
   }
 
   async save(advertisement: Advertisement): Promise<void> {
-
-    console.log(`INSERT INTO advertisements (id, description, password, advertisement_date) 
-      VALUES (?, ?, ?, ?) 
-      ON CONFLICT(id) DO UPDATE 
-      SET description = excluded.description, password = excluded.password, advertisement_date = excluded.advertisement_date`, [
-      advertisement.id(),
-      advertisement.description(),
-      advertisement.password().value(),
-      advertisement.date().toISOString(),
-    ])
 
     await this.connection.execute(
       `INSERT INTO advertisements (id, description, password, advertisement_date) 
