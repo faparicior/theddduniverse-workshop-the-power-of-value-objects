@@ -8,6 +8,16 @@ export class Advertisement {
   ) {
   }
 
+  public update(description: string, password: string): void {
+    this._description = description;
+    this._password = password;
+    this.updateDate();
+  }
+
+  public renew(): void {
+    this.updateDate();
+  }
+
   public id(): string {
     return this._id
   }
@@ -22,16 +32,6 @@ export class Advertisement {
 
   public date(): Date {
     return this._date
-  }
-
-  public update(description: string, password: string): void {
-    this._description = description;
-    this._password = password;
-    this.updateDate();
-  }
-
-  public renew(): void {
-    this.updateDate();
   }
 
   private updateDate(): void {
