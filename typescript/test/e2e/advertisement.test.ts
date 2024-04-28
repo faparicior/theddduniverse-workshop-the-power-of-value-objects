@@ -43,7 +43,6 @@ describe("Advertisement", () => {
         expect(dbData[0].description).toBe(description);
         expect(dbData[0].password).toBeDefined;
         expect(dbData[0].advertisement_date).toBeDefined;
-
     });
 
 
@@ -68,7 +67,6 @@ describe("Advertisement", () => {
         const newDate = new Date(dbData[0].advertisement_date)
         const diff = getHourDifference(newDate)
         expect(diff).toBeLessThan(1)
-
     })
 
     it("Should renew an advertisement", async () => {
@@ -97,7 +95,6 @@ describe("Advertisement", () => {
 
 
 async function withAnAdvertisementCreated(): Promise<void> {
-
     await connection.execute(
         `INSERT INTO advertisements (id, description, password, advertisement_date) VALUES (?, ?, ?, ?)`,
         [
@@ -106,7 +103,6 @@ async function withAnAdvertisementCreated(): Promise<void> {
             createHash('md5').update('myPassword').digest('hex'),
             ADVERTISEMENT_CREATION_DATE
         ]);
-
 }
 
 function getHourDifference(date: Date): number {

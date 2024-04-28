@@ -29,6 +29,16 @@ export class SqliteAdvertisementRepository implements AdvertisementRepository {
 
   async save(advertisement: Advertisement): Promise<void> {
 
+    console.log(`INSERT INTO advertisements (id, description, password, advertisement_date) 
+      VALUES (?, ?, ?, ?) 
+      ON CONFLICT(id) DO UPDATE 
+      SET description = excluded.description, password = excluded.password, advertisement_date = excluded.advertisement_date`, [
+      advertisement.id(),
+      advertisement.description(),
+      advertisement.password().value(),
+      advertisement.date().toISOString(),
+    ])
+
     await this.connection.execute(
       `INSERT INTO advertisements (id, description, password, advertisement_date) 
       VALUES (?, ?, ?, ?) 
@@ -36,9 +46,8 @@ export class SqliteAdvertisementRepository implements AdvertisementRepository {
       SET description = excluded.description, password = excluded.password, advertisement_date = excluded.advertisement_date`, [
       advertisement.id(),
       advertisement.description(),
-      createHash('md5').update(advertisement.password()).digest('hex'),
+      advertisement.password().value(),
       advertisement.date().toISOString(),
     ]);
-
   }
 }

@@ -1,7 +1,5 @@
 import { FrameworkRequest } from '../../../framework/FrameworkRequest';
 import { FrameworkResponse } from '../../../framework/FrameworkResponse';
-import { PublishAdvertisementCommand } from '../../application/publish-advertisement/PublishAdvertisementCommand';
-import { PublishAdvertisementUseCase } from '../../application/publish-advertisement/PublishAdvertisementUseCase';
 import { UpdateAdvertisementCommand } from '../../application/update-advertisement/UpdateAdvertisementCommand';
 import { UpdateAdvertisementUseCase } from '../../application/update-advertisement/UpdateAdvertisementUseCase';
 
