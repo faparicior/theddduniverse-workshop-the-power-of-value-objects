@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Demo\App\Advertisement\Application\Command\RenewAdvertisement;
 
 use Demo\App\Advertisement\Domain\AdvertisementRepository;
-use Demo\App\Advertisement\Domain\ValueObject\Password;
+use Demo\App\Advertisement\Domain\Model\ValueObject\Password;
 use Exception;
 
 final class RenewAdvertisementUseCase

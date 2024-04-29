@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Demo\App\Advertisement\Domain\ValueObject;
+namespace Demo\App\Advertisement\Domain\Model\ValueObject;
 
 
 use Exception;

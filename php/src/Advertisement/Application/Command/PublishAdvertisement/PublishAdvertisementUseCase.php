@@ -5,7 +5,7 @@ namespace Demo\App\Advertisement\Application\Command\PublishAdvertisement;
 
 use Demo\App\Advertisement\Domain\AdvertisementRepository;
 use Demo\App\Advertisement\Domain\Model\Advertisement;
-use Demo\App\Advertisement\Domain\ValueObject\Password;
+use Demo\App\Advertisement\Domain\Model\ValueObject\Password;
 
 final class PublishAdvertisementUseCase
 {

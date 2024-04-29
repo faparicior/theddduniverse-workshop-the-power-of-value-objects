@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Demo\App\Advertisement\Domain\Model;
 
-use Demo\App\Advertisement\Domain\ValueObject\Password;
+use Demo\App\Advertisement\Domain\Model\ValueObject\Password;
 
 final class Advertisement
 {
