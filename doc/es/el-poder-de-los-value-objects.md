@@ -50,7 +50,7 @@ El objetivo es identificar si el código que veremos es un Value object y si cum
 ### Fase 2: Preparación de la solución
 
 - Explicamos el problema
-- Le pedimos al público que busque una soluciñon al mismo
+- Le pedimos al público que busque una solución al mismo
 - Sugerimos un plan en el que el encargado de manejar la complejidad de los passwords sea un Value Object
 
 ### Fase 3: Dinámica con código
