@@ -23,7 +23,7 @@ final class UpdateAdvertisementUseCase
             return;
         }
 
-        $advertisement->update($command->description, $command->password);
+        $advertisement->update($command->description);
 
         $this->advertisementRepository->save($advertisement);
     }
