@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Demo\App\Advertisement\Domain\ValueObject;
+namespace Demo\App\Advertisement\Domain\Model\ValueObject;
 
 
 use Exception;
@@ -24,14 +24,14 @@ final readonly class Password
         return new Password($result);
     }
 
-    public function value(): string
-    {
-        return $this->value;
-    }
-
     public static function fromEncryptedPassword(string $password): self
     {
         return new Password($password);
+    }
+
+    public function value(): string
+    {
+        return $this->value;
     }
 
     public function isValidatedWith(string $password): bool

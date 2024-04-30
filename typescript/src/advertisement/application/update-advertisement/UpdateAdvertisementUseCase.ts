@@ -1,6 +1,6 @@
 import { AdvertisementRepository } from "../../domain/AdvertisementRepository"
 import { UpdateAdvertisementCommand } from "./UpdateAdvertisementCommand"
-import {createHash} from "node:crypto";
+import {Password} from "../../domain/model/value-object/Password";
 
 export class UpdateAdvertisementUseCase {
 
@@ -13,11 +13,11 @@ export class UpdateAdvertisementUseCase {
   async execute(command: UpdateAdvertisementCommand): Promise<void> {
     const advertisement = await this.advertisementRepository.findById(command.id)
 
-    if (advertisement.password() !== createHash('md5').update(command.password).digest('hex')) {
+    if (!await advertisement.password().isValid(command.password)) {
       return
     }
 
-    advertisement.update(command.description, command.password)
+    advertisement.update(command.description, await Password.fromPlainPassword(command.password))
 
     await this.advertisementRepository.save(advertisement)
   }

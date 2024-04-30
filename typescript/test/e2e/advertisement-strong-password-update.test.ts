@@ -63,8 +63,6 @@ describe("Advertisement strong passwords", () => {
     it("Should change to strong password renewing an advertisement", async () => {
         await withAnAdvertisementCreated()
 
-        const newDescription = 'Dream advertisement'
-
         const request = new FrameworkRequest(Method.PATCH, `/advertisements/${FLAT_ID}`,
             { password: 'myPassword' }
         )
@@ -94,5 +92,5 @@ async function withAnAdvertisementCreated(): Promise<void> {
 }
 
 function isAStrongPassword(dbData: any[]): boolean {
-    return dbData[0].password.startsWith('$argon2i$');
+    return dbData[0].password.startsWith('$argon2id$');
 }

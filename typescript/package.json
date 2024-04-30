@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@types/sprintf-js": "^1.1.4",
+    "argon2": "^0.40.1",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
     "ts-jest": "^29.1.2",

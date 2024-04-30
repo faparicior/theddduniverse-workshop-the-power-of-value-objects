@@ -5,7 +5,7 @@ namespace Demo\App\Advertisement\Infrastructure\Persistence;
 
 use Demo\App\Advertisement\Domain\AdvertisementRepository;
 use Demo\App\Advertisement\Domain\Model\Advertisement;
-use Demo\App\Advertisement\Domain\ValueObject\Password;
+use Demo\App\Advertisement\Domain\Model\ValueObject\Password;
 use Demo\App\Framework\Database\DatabaseConnection;
 use Demo\App\Framework\database\SqliteConnection;
 use Exception;
