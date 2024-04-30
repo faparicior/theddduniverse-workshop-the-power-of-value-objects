@@ -61,3 +61,19 @@ El objetivo es identificar si el código que veremos es un Value object y si cum
 ### Fase 4: Revisamos código y presentamos solución
 
 - Ofrecemos la solución en la rama solution
+
+## Actividad: Tarjetas de responsabilidad
+
+<details>
+  <summary><b>Click para expandir</b></summary>
+
+![introduciendo-value-objects-4](introduciendo-value-objects-4.webp)
+</details>
+
+## Solución final: Tarjetas de responsabilidades
+
+<details>
+  <summary><b>Click para expandir</b></summary>
+
+![introduciendo-value-objects-5](introduciendo-value-objects-5.webp)
+</details>
