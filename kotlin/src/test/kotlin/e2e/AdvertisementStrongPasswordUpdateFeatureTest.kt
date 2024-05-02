@@ -109,7 +109,6 @@ class AdvertisementStrongPasswordUpdateFeatureTest {
 
             Assertions.assertTrue(password.startsWith("\$argon2i\$"))
         }
-
     }
 
     private fun withAnAdvertisementWithWeakPassword(block: () -> Unit) {
