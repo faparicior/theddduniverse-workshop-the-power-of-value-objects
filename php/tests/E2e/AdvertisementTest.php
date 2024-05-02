@@ -13,6 +13,10 @@ final class AdvertisementTest extends TestCase
 {
     private const string ADVERTISEMENT_ID = '6fa00b21-2930-483e-b610-d6b0e5b19b29';
     private const string ADVERTISEMENT_CREATION_DATE = '2024-02-03 13:30:23';
+    private const string DESCRIPTION = 'Dream advertisement ';
+    private const string NEW_DESCRIPTION = 'Dream advertisement changed ';
+    private const string PASSWORD = 'myPassword';
+    private const string INCORRECT_PASSWORD = 'myBadPassword';
 
     private DependencyInjectionResolver $resolver;
     private Server $server;
@@ -35,8 +39,8 @@ final class AdvertisementTest extends TestCase
             'advertisement',
             [
                 'id' => self::ADVERTISEMENT_ID,
-                'description' => 'Dream advertisement ',
-                'password' => 'myPassword',
+                'description' => '' . self::DESCRIPTION,
+                'password' => self::PASSWORD,
             ]
         );
 
@@ -44,7 +48,7 @@ final class AdvertisementTest extends TestCase
         self::assertEquals(FrameworkResponse::STATUS_CREATED, $response->statusCode());
 
         $resultSet = $this->connection->query('select * from advertisements;');
-        self::assertEquals('Dream advertisement ', $resultSet[0][1]);
+        self::assertEquals(self::DESCRIPTION, $resultSet[0][1]);
     }
 
     public function testShouldChangeAnAdvertisement(): void
@@ -55,8 +59,8 @@ final class AdvertisementTest extends TestCase
             FrameworkRequest::METHOD_PUT,
             'advertisements/' . self::ADVERTISEMENT_ID,
             [
-                'description' => 'Dream advertisement changed ',
-                'password' => 'myPassword',
+                'description' => self::NEW_DESCRIPTION,
+                'password' => self::PASSWORD,
             ]
         );
         $response = $this->server->route($request);
@@ -64,7 +68,7 @@ final class AdvertisementTest extends TestCase
         self::assertEmpty($response->data());
 
         $resultSet = $this->connection->query('select * from advertisements;');
-        self::assertEquals('Dream advertisement changed ', $resultSet[0]['description']);
+        self::assertEquals(self::NEW_DESCRIPTION, $resultSet[0]['description']);
         $diff = date_diff(new \DateTime($resultSet[0]['advertisement_date']), new \DateTime(self::ADVERTISEMENT_CREATION_DATE));
         self::assertGreaterThan(0, $diff->days);
     }
@@ -77,7 +81,7 @@ final class AdvertisementTest extends TestCase
             FrameworkRequest::METHOD_PATCH,
             'advertisements/' . self::ADVERTISEMENT_ID,
             [
-                'password' => 'myPassword',
+                'password' => self::PASSWORD,
             ]
         );
         $response = $this->server->route($request);
@@ -98,8 +102,8 @@ final class AdvertisementTest extends TestCase
             'advertisements/' . self::ADVERTISEMENT_ID,
             [
                 'id' => self::ADVERTISEMENT_ID,
-                'description' => 'Dream advertisement changed ',
-                'password' => 'myBadPassword',
+                'description' => self::NEW_DESCRIPTION,
+                'password' => self::INCORRECT_PASSWORD,
             ],
         );
 
@@ -108,8 +112,8 @@ final class AdvertisementTest extends TestCase
         self::assertEmpty($response->data());
 
         $resultSet = $this->connection->query('select * from advertisements;');
-        self::assertEquals('Dream advertisement ', $resultSet[0]['description']);
-        self::assertEquals(md5('myPassword'), $resultSet[0]['password']);
+        self::assertEquals(self::DESCRIPTION, $resultSet[0]['description']);
+        self::assertEquals(md5(self::PASSWORD), $resultSet[0]['password']);
     }
 
     public function testShouldNotRenewAnAdvertisementWithIncorrectPassword(): void
@@ -120,7 +124,7 @@ final class AdvertisementTest extends TestCase
             FrameworkRequest::METHOD_PATCH,
             'advertisements/' . self::ADVERTISEMENT_ID,
             [
-                'password' => 'myBadPassword',
+                'password' => self::INCORRECT_PASSWORD,
             ]
         );
 
@@ -142,8 +146,8 @@ final class AdvertisementTest extends TestCase
     {
         $this->connection->execute(sprintf("INSERT INTO advertisements (id, description, password, advertisement_date) VALUES ('%s', '%s', '%s', '%s')",
                 self::ADVERTISEMENT_ID,
-                'Dream advertisement ',
-                md5('myPassword'),
+                self::DESCRIPTION,
+                md5(self::PASSWORD),
                 self::ADVERTISEMENT_CREATION_DATE,
             )
         );

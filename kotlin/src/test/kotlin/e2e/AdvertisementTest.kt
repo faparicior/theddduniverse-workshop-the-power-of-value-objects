@@ -14,11 +14,12 @@ import java.time.LocalDateTime
 
 class AdvertisementTest {
     companion object {
-        private const val ORIGINAL_DATE = "2024-03-04T13:23:15"
+        private const val ADVERTISEMENT_CREATION_DATE = "2024-03-04T13:23:15"
         private const val DESCRIPTION = "Dream advertisement"
         private const val NEW_DESCRIPTION = "Dream advertisement changed"
         private const val ID = "6fa00b21-2930-483e-b610-d6b0e5b19b29"
         private const val PASSWORD = "myPassword"
+        private const val INCORRECT_PASSWORD = "myBadPassword"
     }
 
     private lateinit var connection: DatabaseConnection
@@ -87,7 +88,7 @@ class AdvertisementTest {
 
         Assertions.assertEquals(NEW_DESCRIPTION, description)
         Assertions.assertNotNull(date)
-        Assertions.assertTrue(date!!.isAfter(LocalDateTime.parse(ORIGINAL_DATE)))
+        Assertions.assertTrue(date!!.isAfter(LocalDateTime.parse(ADVERTISEMENT_CREATION_DATE)))
     }
 
     @Test
@@ -116,13 +117,73 @@ class AdvertisementTest {
         }
 
         Assertions.assertNotNull(date)
-        Assertions.assertTrue(date!!.isAfter(LocalDateTime.parse(ORIGINAL_DATE)))
+        Assertions.assertTrue(date!!.isAfter(LocalDateTime.parse(ADVERTISEMENT_CREATION_DATE)))
+    }
+
+    @Test
+    fun `should not update an advertisement with incorrect password`() {
+
+        withAnAdvertisementCreated()
+
+        val server = Server(DependencyInjectionResolver())
+
+        val result = server.route(FrameworkRequest(
+                FrameworkRequest.METHOD_PUT,
+                "advertisement/$ID",
+                mapOf(
+                    "description" to NEW_DESCRIPTION,
+                    "password" to INCORRECT_PASSWORD,
+                )
+            )
+        )
+
+        Assertions.assertEquals(FrameworkResponse.STATUS_OK, result.statusCode)
+
+        val resultSet = this.connection.query("SELECT * from advertisements;")
+        var description = ""
+        var date: LocalDateTime? = null
+
+        if (resultSet.next()) {
+            description = resultSet.getString("description")
+            date = LocalDateTime.parse(resultSet.getString("advertisement_date"))
+        }
+
+        Assertions.assertEquals(DESCRIPTION, description)
+        Assertions.assertTrue(date!!.isEqual(LocalDateTime.parse(ADVERTISEMENT_CREATION_DATE)))
+    }
+
+    @Test
+    fun `should not renew an advertisement with incorrect password`() {
+
+        withAnAdvertisementCreated()
+
+        val server = Server(DependencyInjectionResolver())
+
+        val result = server.route(FrameworkRequest(
+                FrameworkRequest.METHOD_PATCH,
+                "advertisement/$ID",
+                mapOf(
+                    "password" to INCORRECT_PASSWORD,
+                )
+            )
+        )
+
+        Assertions.assertEquals(FrameworkResponse.STATUS_OK, result.statusCode)
+
+        val resultSet = this.connection.query("SELECT * from advertisements;")
+        var date: LocalDateTime? = null
+
+        if (resultSet.next()) {
+            date = LocalDateTime.parse(resultSet.getString("advertisement_date"))
+        }
+
+        Assertions.assertTrue(date!!.isEqual(LocalDateTime.parse(ADVERTISEMENT_CREATION_DATE)))
     }
 
     private fun withAnAdvertisementCreated()
     {
         val password = "myPassword".md5()
-        val creationDate = LocalDateTime.parse(ORIGINAL_DATE).toString()
+        val creationDate = LocalDateTime.parse(ADVERTISEMENT_CREATION_DATE).toString()
         this.connection.execute("INSERT INTO advertisements (id, description, password, advertisement_date)" +
                 " VALUES ('$ID', '$DESCRIPTION', '$password', '$creationDate')")
     }
