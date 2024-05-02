@@ -6,11 +6,11 @@ import advertisement.domain.model.value_object.Password
 import java.time.LocalDateTime
 
 class PublishAdvertisementUseCase(private val advertisementRepository: AdvertisementRepository) {
-    fun execute(addAdvertisementCommand: PublishAdvertisementCommand) {
+    fun execute(publishAdvertisementCommand: PublishAdvertisementCommand) {
         val advertisement = Advertisement(
-            addAdvertisementCommand.id,
-            addAdvertisementCommand.description,
-            Password.fromPlainPassword(addAdvertisementCommand.password),
+            publishAdvertisementCommand.id,
+            publishAdvertisementCommand.description,
+            Password.fromPlainPassword(publishAdvertisementCommand.password),
             LocalDateTime.now()
         )
 
