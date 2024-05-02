@@ -8,4 +8,12 @@ data class FrameworkRequest(val method: String, val path: String, val content: M
         const val METHOD_PUT = "PUT"
         const val METHOD_PATCH = "PATCH"
     }
+
+    fun pathStart(): String {
+        return path.substringBefore("/")
+    }
+
+    fun getIdPath(): String {
+        return path.substringAfter("/")
+    }
 }

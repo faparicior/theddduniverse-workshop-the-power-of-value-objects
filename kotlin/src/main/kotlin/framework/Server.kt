@@ -37,7 +37,7 @@ class Server(private val resolver: DependencyInjectionResolver){
     }
 
     private fun put(request: FrameworkRequest): FrameworkResponse {
-        return when (request.path) {
+        return when (request.pathStart()) {
             "advertisement" -> {
                 resolver.updateAdvertisementController().execute(request)
             }
@@ -48,7 +48,7 @@ class Server(private val resolver: DependencyInjectionResolver){
     }
 
     private fun patch(request: FrameworkRequest): FrameworkResponse {
-        return when (request.path) {
+        return when (request.pathStart()) {
             "advertisement" -> {
                 resolver.renewAdvertisementController().execute(request)
             }

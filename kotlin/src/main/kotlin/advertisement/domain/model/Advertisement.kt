@@ -1,9 +1,8 @@
 package advertisement.domain.model
 
-import java.util.*
+import java.time.LocalDateTime
 
-
-data class Advertisement(val id: String?, var description: String?, var password: String?, var date: Date)
+data class Advertisement(val id: String?, var description: String?, var password: String?, var date: LocalDateTime)
 {
     fun update(description: String?)
     {
@@ -18,6 +17,6 @@ data class Advertisement(val id: String?, var description: String?, var password
 
     private fun updateDate()
     {
-        this.date = Date()
+        this.date = LocalDateTime.now()
     }
 }

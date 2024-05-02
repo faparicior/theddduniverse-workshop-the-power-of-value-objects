@@ -2,7 +2,7 @@ package advertisement.application.publishAdvertisement
 
 import advertisement.domain.AdvertisementRepository
 import advertisement.domain.model.Advertisement
-import java.util.*
+import java.time.LocalDateTime
 
 class PublishAdvertisementUseCase(private val advertisementRepository: AdvertisementRepository) {
     fun execute(addAdvertisementCommand: PublishAdvertisementCommand) {
@@ -10,7 +10,7 @@ class PublishAdvertisementUseCase(private val advertisementRepository: Advertise
             addAdvertisementCommand.id,
             addAdvertisementCommand.description,
             addAdvertisementCommand.password,
-            Date()
+            LocalDateTime.now()
         )
 
         advertisementRepository.save(advertisement)

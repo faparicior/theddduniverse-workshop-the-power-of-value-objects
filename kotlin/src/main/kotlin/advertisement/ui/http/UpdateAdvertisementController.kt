@@ -10,7 +10,7 @@ class UpdateAdvertisementController(private val useCase: UpdateAdvertisementUseC
     fun execute(request: FrameworkRequest): FrameworkResponse {
         useCase.execute(
             UpdateAdvertisementCommand(
-                request.content["id"]!!,
+                request.getIdPath(),
                 request.content["description"]!!,
                 request.content["password"]!!,
             )
