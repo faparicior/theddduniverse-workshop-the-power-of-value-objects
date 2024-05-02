@@ -10,7 +10,7 @@ class RenewAdvertisementController(private val useCase: RenewAdvertisementUseCas
     fun execute(request: FrameworkRequest): FrameworkResponse {
         useCase.execute(
             RenewAdvertisementCommand(
-                request.content["id"]!!,
+                request.getIdPath(),
                 request.content["password"]!!,
             )
         )

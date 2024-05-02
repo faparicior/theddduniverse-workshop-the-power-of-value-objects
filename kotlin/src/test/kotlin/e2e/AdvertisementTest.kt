@@ -11,8 +11,10 @@ import org.junit.jupiter.api.Test
 import java.security.MessageDigest
 import java.time.LocalDateTime
 
+
 class AdvertisementTest {
     companion object {
+        private const val ORIGINAL_DATE = "2024-03-04T13:23:15"
         private const val DESCRIPTION = "Dream advertisement"
         private const val NEW_DESCRIPTION = "Dream advertisement changed"
         private const val ID = "6fa00b21-2930-483e-b610-d6b0e5b19b29"
@@ -49,7 +51,7 @@ class AdvertisementTest {
         var description = ""
 
         if (resultSet.next()) {
-            description = resultSet.getString(2)
+            description = resultSet.getString("description")
         }
 
         Assertions.assertEquals(DESCRIPTION, description)
@@ -76,19 +78,51 @@ class AdvertisementTest {
 
         val resultSet = this.connection.query("SELECT * from advertisements;")
         var description = ""
+        var date: LocalDateTime? = null
 
         if (resultSet.next()) {
-            description = resultSet.getString(2)
+            description = resultSet.getString("description")
+            date = LocalDateTime.parse(resultSet.getString("advertisement_date"))
         }
 
         Assertions.assertEquals(NEW_DESCRIPTION, description)
-        // todo review date
+        Assertions.assertNotNull(date)
+        Assertions.assertTrue(date!!.isAfter(LocalDateTime.parse(ORIGINAL_DATE)))
+    }
+
+    @Test
+    fun `should renew an advertisement`() {
+
+        withAnAdvertisementCreated()
+
+        val server = Server(DependencyInjectionResolver())
+
+        val result = server.route(FrameworkRequest(
+                FrameworkRequest.METHOD_PATCH,
+                "advertisement/$ID",
+                mapOf(
+                    "password" to PASSWORD,
+                )
+            )
+        )
+
+        Assertions.assertEquals(FrameworkResponse.STATUS_OK, result.statusCode)
+
+        val resultSet = this.connection.query("SELECT * from advertisements;")
+        var date: LocalDateTime? = null
+
+        if (resultSet.next()) {
+            date = LocalDateTime.parse(resultSet.getString("advertisement_date"))
+        }
+
+        Assertions.assertNotNull(date)
+        Assertions.assertTrue(date!!.isAfter(LocalDateTime.parse(ORIGINAL_DATE)))
     }
 
     private fun withAnAdvertisementCreated()
     {
         val password = "myPassword".md5()
-        val creationDate = LocalDateTime.parse("2024-03-04T13:23:15").toString()
+        val creationDate = LocalDateTime.parse(ORIGINAL_DATE).toString()
         this.connection.execute("INSERT INTO advertisements (id, description, password, advertisement_date)" +
                 " VALUES ('$ID', '$DESCRIPTION', '$password', '$creationDate')")
     }
