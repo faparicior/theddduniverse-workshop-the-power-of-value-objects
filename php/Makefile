@@ -16,7 +16,7 @@ composer-install:
 
 tests:
 	docker compose run --rm --interactive --tty --user $(UID) -v $(current_dir)/:/usr/src/app -w /usr/src/app \
-	  php-ddduniverse php /usr/src/app/vendor/phpunit/phpunit/phpunit /usr/src/app/tests/E2e
+	  php-ddduniverse php /usr/src/app/vendor/phpunit/phpunit/phpunit /usr/src/app/tests/E2e /usr/src/app/tests/Unit
 .PHONY: tests
 
 composer:

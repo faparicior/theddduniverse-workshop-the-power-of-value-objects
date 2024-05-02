@@ -28,7 +28,7 @@ class PasswordTest extends TestCase
         self::assertStringStartsWith('$argon2i$', $password->value());
     }
 
-    public function testShouldBeCreatedWithEncryptedValue(): void
+    public function testShouldBeCreatedWithEncryptedValueWithoutChangeTheOriginalHash(): void
     {
         $strongPassword = Password::fromEncryptedPassword(self::STRONG_ALGORITHM_PASSWORD);
         $weakPassword = Password::fromEncryptedPassword(self::MD5_ALGORITHM_PASSWORD);

@@ -28,7 +28,7 @@ class PasswordTest
     }
 
     @Test
-    fun testShouldBeCreatedWithEncryptedValue() {
+    fun testShouldBeCreatedWithEncryptedValueWithoutChangeTheOriginalHash() {
         val strongPassword = Password.fromEncryptedPassword(STRONG_ALGORITHM_PASSWORD)
         val weakPassword = Password.fromEncryptedPassword(MD5_ALGORITHM_PASSWORD)
 
