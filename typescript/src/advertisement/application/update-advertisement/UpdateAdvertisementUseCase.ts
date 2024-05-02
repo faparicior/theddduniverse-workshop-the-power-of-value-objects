@@ -17,7 +17,7 @@ export class UpdateAdvertisementUseCase {
       return
     }
 
-    advertisement.update(command.description, command.password)
+    advertisement.update(command.description)
 
     await this.advertisementRepository.save(advertisement)
   }

@@ -8,9 +8,8 @@ export class Advertisement {
   ) {
   }
 
-  public update(description: string, password: string): void {
+  public update(description: string): void {
     this._description = description;
-    this._password = password;
     this.updateDate();
   }
 

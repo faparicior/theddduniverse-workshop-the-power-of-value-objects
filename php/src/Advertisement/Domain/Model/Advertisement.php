@@ -18,10 +18,9 @@ final class Advertisement
         $this->updateDate();
     }
 
-    public function update(string $description, string $password): void
+    public function update(string $description): void
     {
         $this->description = $description;
-        $this->password = $password;
         $this->updateDate();
     }
 
