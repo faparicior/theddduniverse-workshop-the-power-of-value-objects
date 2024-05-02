@@ -12,7 +12,7 @@ class SqLiteAdvertisementRepository(private val connection: DatabaseConnection):
         connection.execute(
             "INSERT INTO advertisements (id, description, password, advertisement_date) VALUES ('" +
                     "${advertisement.id}', '${advertisement.description}', '$passwordHash', '${advertisement.date}') " +
-                    "ON CONFLICT(id) DO UPDATE SET description = '${advertisement.description}', password = '$advertisement.password', advertisement_date = '${advertisement.date}';"
+                    "ON CONFLICT(id) DO UPDATE SET description = '${advertisement.description}', password = '$passwordHash', advertisement_date = '${advertisement.date}';"
         )
     }
 
