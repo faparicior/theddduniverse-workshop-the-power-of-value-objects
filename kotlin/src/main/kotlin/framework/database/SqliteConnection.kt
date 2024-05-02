@@ -4,10 +4,20 @@ import java.io.File
 import java.io.InputStream
 import java.sql.*
 
-class SqliteConnection: DatabaseConnection {
+class SqliteConnection private constructor(): DatabaseConnection {
+
     private lateinit var conn: Connection
     init {
         this.connect()
+    }
+
+    companion object {
+        @Volatile private var instance: SqliteConnection? = null
+
+        fun getInstance() =
+            instance ?: synchronized(this) {
+                instance ?: SqliteConnection().also { instance = it }
+            }
     }
 
     override fun execute(sql: String) {

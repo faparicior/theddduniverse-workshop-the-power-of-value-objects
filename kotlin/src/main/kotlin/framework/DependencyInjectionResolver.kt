@@ -43,6 +43,6 @@ class DependencyInjectionResolver {
     }
 
     fun connection(): DatabaseConnection {
-        return SqliteConnection()
+        return SqliteConnection.getInstance()
     }
 }
