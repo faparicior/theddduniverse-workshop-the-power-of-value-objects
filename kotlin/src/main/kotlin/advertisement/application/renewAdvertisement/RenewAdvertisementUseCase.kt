@@ -18,6 +18,7 @@ class RenewAdvertisementUseCase(private val advertisementRepository: Advertiseme
     private fun String.md5(): String {
         val md = MessageDigest.getInstance("MD5")
         val digest = md.digest(this.toByteArray())
-        return digest.toString()
+        val hexString = digest.joinToString("") { "%02x".format(it) }
+        return hexString
     }
 }
