@@ -5,11 +5,11 @@ import advertisement.domain.model.Advertisement
 import java.time.LocalDateTime
 
 class PublishAdvertisementUseCase(private val advertisementRepository: AdvertisementRepository) {
-    fun execute(addAdvertisementCommand: PublishAdvertisementCommand) {
+    fun execute(publishAdvertisementCommand: PublishAdvertisementCommand) {
         val advertisement = Advertisement(
-            addAdvertisementCommand.id,
-            addAdvertisementCommand.description,
-            addAdvertisementCommand.password,
+            publishAdvertisementCommand.id,
+            publishAdvertisementCommand.description,
+            publishAdvertisementCommand.password,
             LocalDateTime.now()
         )
 
