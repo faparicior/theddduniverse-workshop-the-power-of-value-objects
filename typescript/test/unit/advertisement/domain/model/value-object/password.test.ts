@@ -24,10 +24,12 @@ describe("Advertisement password", () => {
         expect(password.value().startsWith('$argon2')).toBe(true) ;
     });
 
-    it("Should not change passwords with a strong algorithm", async () => {
-        let password = Password.fromEncryptedPassword(STRONG_HASH_PASSWORD);
+    it("Should be created with encrypted value without change the original hash", async () => {
+        let strongPassword = Password.fromEncryptedPassword(STRONG_HASH_PASSWORD);
+        let weakPassword = Password.fromEncryptedPassword(WEAK_HASH_PASSWORD);
 
-        expect(password.value()).toEqual(STRONG_HASH_PASSWORD) ;
+        expect(strongPassword.value()).toEqual(STRONG_HASH_PASSWORD);
+        expect(weakPassword.value()).toEqual(WEAK_HASH_PASSWORD);
     });
 
     it("Should validate passwords with a strong algorithm", async () => {
