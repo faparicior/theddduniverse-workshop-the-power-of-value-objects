@@ -17,9 +17,8 @@ Acto seguido, les daremos acceso al repositorio y les explicamos los puntos clav
 - Simula un framework
 - Hay tests a nivel de controlador para asegurar que no rompemos nada
 
-```
-TODO: Link a presentación.
-```
+[Here](https://docs.google.com/presentation/d/1QvEjYzJK5hzxI8v3u4s0mHVenjLNLwSrk1HrDsH0HKg/edit?usp=sharing) you can access the slides content.
+
 </details>
 
 ### Dinámica
@@ -47,22 +46,7 @@ El objetivo es identificar si el código que veremos es un Value object y si cum
 
 #### [Value object o no](https://theddduniverse.com/game-cards/cards/primary/value-object/#actividad-value-object-o-no)
 
-### Fase 2: Preparación de la solución
-
-- Explicamos el problema
-- Le pedimos al público que busque una solución al mismo
-- Sugerimos un plan en el que el encargado de manejar la complejidad de los passwords sea un Value Object
-
-### Fase 3: Dinámica con código
-
-- Hablaremos de los requerimientos y el código.
-- Miraremos cómo está en el proyecto inicial y en el distribuido en Arquitectura hexagonal.
-
-### Fase 4: Revisamos código y presentamos solución
-
-- Ofrecemos la solución en la rama solution
-
-## Actividad: Tarjetas de responsabilidad
+### Fase 2: Tarjetas de responsabilidad
 
 <details>
   <summary><b>Click para expandir</b></summary>
@@ -70,10 +54,23 @@ El objetivo es identificar si el código que veremos es un Value object y si cum
 ![introduciendo-value-objects-4](introduciendo-value-objects-4.webp)
 </details>
 
-## Solución final: Tarjetas de responsabilidades
+## Solución final: Tarjetas de responsabilidad
 
 <details>
   <summary><b>Click para expandir</b></summary>
 
 ![introduciendo-value-objects-5](introduciendo-value-objects-5.webp)
 </details>
+
+### Fase 3: Preparación de la solución
+
+- Explicamos el problema
+- Miraremos cómo está en el proyecto inicial.
+- Le pedimos al público que piense una posible solución al mismo
+- Sugerimos un plan en el que el encargado de manejar la complejidad de los passwords sea un Value Object usando las tarjetas de responsabilidad
+
+![introduciendo-value-objects-6](introduciendo-value-objects-6.webp)
+
+### Fase 4: Revisamos código y presentamos solución
+
+- Ofrecemos la solución en la rama solution
