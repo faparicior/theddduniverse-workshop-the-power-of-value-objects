@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import java.security.MessageDigest
 
 
-class AdvertisementStrongPasswordUpdateFeatureTest {
+class AdvertisementArgon2PasswordUpdateFeatureTest {
     companion object {
         private const val ADVERTISEMENT_CREATION_DATE = "2024-03-04T13:23:15"
         private const val DESCRIPTION = "Dream advertisement"
@@ -29,7 +29,7 @@ class AdvertisementStrongPasswordUpdateFeatureTest {
     }
 
     @Test
-    fun `should publish an advertisement with strong password`() {
+    fun `should publish an advertisement with Argon2 password`() {
 
         val server = Server(DependencyInjectionResolver())
 
@@ -57,8 +57,8 @@ class AdvertisementStrongPasswordUpdateFeatureTest {
     }
 
     @Test
-    fun `should change to strong password updating an advertisement`() {
-        withAnAdvertisementWithWeakPassword {
+    fun `should change to Argon2 password updating an advertisement`() {
+        withAnAdvertisementWithMd5Password {
             val server = Server(DependencyInjectionResolver())
 
             val result = server.route(FrameworkRequest(
@@ -85,8 +85,8 @@ class AdvertisementStrongPasswordUpdateFeatureTest {
     }
 
     @Test
-    fun `should change to strong password renewing an advertisement`() {
-        withAnAdvertisementWithWeakPassword {
+    fun `should change to Argon2 password renewing an advertisement`() {
+        withAnAdvertisementWithMd5Password {
             val server = Server(DependencyInjectionResolver())
 
             val result = server.route(FrameworkRequest(
@@ -111,7 +111,7 @@ class AdvertisementStrongPasswordUpdateFeatureTest {
         }
     }
 
-    private fun withAnAdvertisementWithWeakPassword(block: () -> Unit) {
+    private fun withAnAdvertisementWithMd5Password(block: () -> Unit) {
         this.connection.execute(
             """
             INSERT INTO advertisements (id, description, password, advertisement_date)

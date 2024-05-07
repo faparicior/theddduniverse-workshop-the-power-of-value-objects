@@ -9,7 +9,7 @@ use Demo\App\Framework\FrameworkResponse;
 use Demo\App\Framework\Server;
 use PHPUnit\Framework\TestCase;
 
-final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
+final class AdvertisementArgon2PasswordUpdateFeatureTest extends TestCase
 {
     private const string ADVERTISEMENT_ID = '6fa00b21-2930-483e-b610-d6b0e5b19b29';
     private const string ADVERTISEMENT_CREATION_DATE = '2024-02-03 13:30:23';
@@ -27,7 +27,7 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
         parent::setUp();
     }
 
-    public function testShouldPublishAnAdvertisementWithStrongPassword(): void
+    public function testShouldPublishAnAdvertisementWithArgon2Password(): void
     {
         $request = new FrameworkRequest(
             FrameworkRequest::METHOD_POST,
@@ -43,12 +43,12 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
         self::assertEquals(FrameworkResponse::STATUS_CREATED, $response->statusCode());
 
         $resultSet = $this->connection->query('select * from advertisements;');
-        $this->expectHasAStrongPassword($resultSet[0]['password']);
+        $this->expectHasAnArgon2Password($resultSet[0]['password']);
     }
 
-    public function testShouldChangeToStrongPasswordUpdatingAnAdvertisement(): void
+    public function testShouldChangeToArgon2PasswordUpdatingAnAdvertisement(): void
     {
-        $this->withAnAdvertisementWithAWeakPasswordCreated();
+        $this->withAnAdvertisementWithAMd5PasswordCreated();
 
         $request = new FrameworkRequest(
             FrameworkRequest::METHOD_PUT,
@@ -64,12 +64,12 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
         self::assertEmpty($response->data());
 
         $resultSet = $this->connection->query('select * from advertisements;');
-        $this->expectHasAStrongPassword($resultSet[0]['password']);
+        $this->expectHasAnArgon2Password($resultSet[0]['password']);
     }
 
-    public function testShouldChangeToStrongPasswordRenewingAnAdvertisement(): void
+    public function testShouldChangeToArgon2PasswordRenewingAnAdvertisement(): void
     {
-        $this->withAnAdvertisementWithAWeakPasswordCreated();
+        $this->withAnAdvertisementWithAMd5PasswordCreated();
 
         $request = new FrameworkRequest(
             FrameworkRequest::METHOD_PATCH,
@@ -84,7 +84,7 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
         self::assertEmpty($response->data());
 
         $resultSet = $this->connection->query('select * from advertisements;');
-        $this->expectHasAStrongPassword($resultSet[0]['password']);
+        $this->expectHasAnArgon2Password($resultSet[0]['password']);
     }
 
     private function emptyDatabase(): void
@@ -92,7 +92,7 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
         $this->connection->execute('delete from advertisements;');
     }
 
-    private function withAnAdvertisementWithAWeakPasswordCreated(): void
+    private function withAnAdvertisementWithAMd5PasswordCreated(): void
     {
         $this->connection->execute(sprintf("INSERT INTO advertisements (id, description, password, advertisement_date) VALUES ('%s', '%s', '%s', '%s')",
                 self::ADVERTISEMENT_ID,
@@ -103,7 +103,7 @@ final class AdvertisementStrongPasswordUpdateFeatureTest extends TestCase
         );
     }
 
-    private function expectHasAStrongPassword($password): void
+    private function expectHasAnArgon2Password($password): void
     {
         self::assertStringStartsWith('$argon2i$', $password);
     }
