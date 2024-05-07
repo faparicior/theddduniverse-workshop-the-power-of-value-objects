@@ -10,7 +10,7 @@ let server: FrameworkServer
 const FLAT_ID = '6fa00b21-2930-483e-b610-d6b0e5b19b29';
 const ADVERTISEMENT_CREATION_DATE = '2024-02-03 13:30:23';
 
-describe("Advertisement strong passwords", () => {
+describe("Advertisement Argon2 passwords", () => {
 
     beforeAll(async () => {
         connection = await SqliteConnectionFactory.createClient();
@@ -22,7 +22,7 @@ describe("Advertisement strong passwords", () => {
         await connection.execute('delete from advertisements;', [])
     })
 
-    it("Should create a advertisement with strong password", async () => {
+    it("Should create a advertisement with Argon2 password", async () => {
 
         const description = 'Dream advertisement'
         const id = uuid()
@@ -37,12 +37,12 @@ describe("Advertisement strong passwords", () => {
 
         const dbData = await connection.query("SELECT * FROM advertisements") as any[]
 
-        expect(isAStrongPassword(dbData)).toBe(true);
+        expect(isAnArgon2Password(dbData)).toBe(true);
     });
 
 
-    it("Should change to strong password updating an advertisement", async () => {
-        await withAnAdvertisementCreated()
+    it("Should change to Argon2 password updating an advertisement", async () => {
+        await withAnAdvertisementWithAMd5PasswordCreated()
 
         const newDescription = 'Dream advertisement changed'
 
@@ -57,11 +57,11 @@ describe("Advertisement strong passwords", () => {
 
         const dbData = await connection.query("SELECT * FROM advertisements") as any[]
 
-        expect(isAStrongPassword(dbData)).toBe(true);
+        expect(isAnArgon2Password(dbData)).toBe(true);
     })
 
-    it("Should change to strong password renewing an advertisement", async () => {
-        await withAnAdvertisementCreated()
+    it("Should change to Argon2 password renewing an advertisement", async () => {
+        await withAnAdvertisementWithAMd5PasswordCreated()
 
         const request = new FrameworkRequest(Method.PATCH, `/advertisements/${FLAT_ID}`,
             { password: 'myPassword' }
@@ -74,11 +74,11 @@ describe("Advertisement strong passwords", () => {
 
         const dbData = await connection.query("SELECT * FROM advertisements") as any[]
 
-        expect(isAStrongPassword(dbData)).toBe(true);
+        expect(isAnArgon2Password(dbData)).toBe(true);
     })
 });
 
-async function withAnAdvertisementCreated(): Promise<void> {
+async function withAnAdvertisementWithAMd5PasswordCreated(): Promise<void> {
 
     await connection.execute(
         `INSERT INTO advertisements (id, description, password, advertisement_date) VALUES (?, ?, ?, ?)`,
@@ -91,6 +91,6 @@ async function withAnAdvertisementCreated(): Promise<void> {
 
 }
 
-function isAStrongPassword(dbData: any[]): boolean {
+function isAnArgon2Password(dbData: any[]): boolean {
     return dbData[0].password.startsWith('$argon2id$');
 }
