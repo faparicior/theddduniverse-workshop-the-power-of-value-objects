@@ -28,6 +28,10 @@ class AdvertisementArgon2PasswordUpdateFeatureTest {
         this.connection.execute("DELETE FROM advertisements")
     }
 
+    ////////////////////////////////////////////////////////////
+    // Use this help
+    // https://github.com/phxql/argon2-jvm
+
     @Test
     fun `should publish an advertisement with Argon2 password`() {
 

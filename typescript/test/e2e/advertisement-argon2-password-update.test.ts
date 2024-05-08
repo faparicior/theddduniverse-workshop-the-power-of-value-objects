@@ -22,6 +22,10 @@ describe("Advertisement Argon2 passwords", () => {
         await connection.execute('delete from advertisements;', [])
     })
 
+    ////////////////////////////////////////////////////////////
+    // Use this help
+    // https://github.com/ranisalt/node-argon2#readme
+
     it("Should create a advertisement with Argon2 password", async () => {
 
         const description = 'Dream advertisement'

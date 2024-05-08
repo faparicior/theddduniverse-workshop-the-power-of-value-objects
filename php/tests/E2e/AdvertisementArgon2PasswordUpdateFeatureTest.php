@@ -27,6 +27,10 @@ final class AdvertisementArgon2PasswordUpdateFeatureTest extends TestCase
         parent::setUp();
     }
 
+    ////////////////////////////////////////////////////////////
+    // Use this help
+    // https://www.php.net/manual/es/function.password-hash.php
+
     public function testShouldPublishAnAdvertisementWithArgon2Password(): void
     {
         $request = new FrameworkRequest(
