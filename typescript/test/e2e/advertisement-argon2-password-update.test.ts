@@ -96,5 +96,5 @@ async function withAnAdvertisementWithAMd5PasswordCreated(): Promise<void> {
 }
 
 function isAnArgon2Password(dbData: any[]): boolean {
-    return dbData[0].password.startsWith('$argon2i$');
+    return dbData[0].password.startsWith('$argon2id$');
 }
