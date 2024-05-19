@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 final class AdvertisementArgon2PasswordUpdateFeatureTest extends TestCase
 {
-    private const string FLAT_ID = '6fa00b21-2930-483e-b610-d6b0e5b19b29';
+    private const string ADVERTISEMENT_ID = '6fa00b21-2930-483e-b610-d6b0e5b19b29';
     private const string ADVERTISEMENT_CREATION_DATE = '2024-02-03 13:30:23';
 
     private DependencyInjectionResolver $resolver;
@@ -37,7 +37,7 @@ final class AdvertisementArgon2PasswordUpdateFeatureTest extends TestCase
             FrameworkRequest::METHOD_POST,
             'advertisement',
             [
-                'id' => self::FLAT_ID,
+                'id' => self::ADVERTISEMENT_ID,
                 'description' => 'Dream advertisement ',
                 'password' => 'myPassword',
             ]
@@ -56,7 +56,7 @@ final class AdvertisementArgon2PasswordUpdateFeatureTest extends TestCase
 
         $request = new FrameworkRequest(
             FrameworkRequest::METHOD_PUT,
-            'advertisements/' . self::FLAT_ID,
+            'advertisements/' . self::ADVERTISEMENT_ID,
             [
                 'description' => 'Dream advertisement changed ',
                 'password' => 'myPassword',
@@ -77,7 +77,7 @@ final class AdvertisementArgon2PasswordUpdateFeatureTest extends TestCase
 
         $request = new FrameworkRequest(
             FrameworkRequest::METHOD_PATCH,
-            'advertisements/' . self::FLAT_ID,
+            'advertisements/' . self::ADVERTISEMENT_ID,
             [
                 'password' => 'myPassword',
             ],
@@ -99,7 +99,7 @@ final class AdvertisementArgon2PasswordUpdateFeatureTest extends TestCase
     private function withAnAdvertisementWithAMd5PasswordCreated(): void
     {
         $this->connection->execute(sprintf("INSERT INTO advertisements (id, description, password, advertisement_date) VALUES ('%s', '%s', '%s', '%s')",
-                self::FLAT_ID,
+                self::ADVERTISEMENT_ID,
                 'Dream advertisement ',
                 md5('myPassword'),
                 self::ADVERTISEMENT_CREATION_DATE,
