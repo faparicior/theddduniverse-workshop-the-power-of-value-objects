@@ -1,4 +1,4 @@
-package advertisement.infrastructure.persisence
+package advertisement.infrastructure.persistence
 
 import advertisement.domain.AdvertisementRepository
 import advertisement.domain.model.Advertisement
