@@ -4,6 +4,7 @@ import advertisement.application.publishAdvertisement.PublishAdvertisementUseCas
 import advertisement.application.renewAdvertisement.RenewAdvertisementUseCase
 import advertisement.application.updateAdvertisement.UpdateAdvertisementUseCase
 import advertisement.domain.AdvertisementRepository
+import advertisement.infrastructure.PasswordHasher
 import advertisement.infrastructure.persistence.SqLiteAdvertisementRepository
 import advertisement.ui.http.PublishAdvertisementController
 import advertisement.ui.http.RenewAdvertisementController
@@ -15,7 +16,8 @@ class DependencyInjectionResolver {
     fun publishAdvertisementController(): PublishAdvertisementController {
         return PublishAdvertisementController(
             PublishAdvertisementUseCase(
-                this.advertisementRepository()
+                this.advertisementRepository(),
+                this.hashFactory()
             )
         )
     }
@@ -23,7 +25,8 @@ class DependencyInjectionResolver {
     fun updateAdvertisementController(): UpdateAdvertisementController {
         return UpdateAdvertisementController(
             UpdateAdvertisementUseCase(
-                this.advertisementRepository()
+                this.advertisementRepository(),
+                this.hashFactory()
             )
         )
     }
@@ -31,7 +34,8 @@ class DependencyInjectionResolver {
     fun renewAdvertisementController(): RenewAdvertisementController {
         return RenewAdvertisementController(
             RenewAdvertisementUseCase(
-                this.advertisementRepository()
+                this.advertisementRepository(),
+                this.hashFactory()
             )
         )
     }
@@ -40,6 +44,10 @@ class DependencyInjectionResolver {
         return SqLiteAdvertisementRepository(
             this.connection()
         )
+    }
+
+    fun hashFactory(): PasswordHasher {
+        return PasswordHasher()
     }
 
     fun connection(): DatabaseConnection {

@@ -3,14 +3,15 @@ package advertisement.application.publishAdvertisement
 import advertisement.domain.AdvertisementRepository
 import advertisement.domain.model.Advertisement
 import advertisement.domain.model.value_object.Password
+import advertisement.infrastructure.PasswordHasher
 import java.time.LocalDateTime
 
-class PublishAdvertisementUseCase(private val advertisementRepository: AdvertisementRepository) {
+class PublishAdvertisementUseCase(private val advertisementRepository: AdvertisementRepository, private val passwordHasher: PasswordHasher) {
     fun execute(publishAdvertisementCommand: PublishAdvertisementCommand) {
         val advertisement = Advertisement(
             publishAdvertisementCommand.id,
             publishAdvertisementCommand.description,
-            Password.fromPlainPassword(publishAdvertisementCommand.password),
+            Password.fromPlainPassword(publishAdvertisementCommand.password, passwordHasher),
             LocalDateTime.now()
         )
 

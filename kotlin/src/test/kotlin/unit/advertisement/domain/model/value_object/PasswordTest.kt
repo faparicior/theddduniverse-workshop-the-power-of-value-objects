@@ -1,6 +1,7 @@
 package unit.advertisement.domain.model.value_object
 
 import advertisement.domain.model.value_object.Password
+import advertisement.infrastructure.PasswordHasher
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.lang.reflect.Modifier
@@ -22,7 +23,7 @@ class PasswordTest
 
     @Test
     fun testShouldBeCreatedWithAStrongHash() {
-        val password = Password.fromPlainPassword("password")
+        val password = Password.fromPlainPassword("password", PasswordHasher())
 
         Assertions.assertTrue(password.value().startsWith("\$argon2i\$"))
     }
@@ -40,13 +41,13 @@ class PasswordTest
     fun testShouldValidatePasswordsWithAStrongAlgorithm() {
         val password = Password.fromEncryptedPassword(STRONG_ALGORITHM_PASSWORD)
 
-        Assertions.assertTrue(password.isValidatedWith("myPassword"))
+        Assertions.assertTrue(password.validateWith("myPassword", PasswordHasher()))
     }
 
     @Test
     fun testShouldValidatePasswordsWithAWeakAlgorithm() {
         val password = Password.fromEncryptedPassword(MD5_ALGORITHM_PASSWORD)
 
-        Assertions.assertTrue(password.isValidatedWith("myPassword"))
+        Assertions.assertTrue(password.validateWith("myPassword", PasswordHasher()))
     }
 }
